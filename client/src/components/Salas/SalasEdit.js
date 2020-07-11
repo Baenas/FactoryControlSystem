@@ -5,6 +5,7 @@ import ApiClient from '../../services/ApiClient'
 
 class SalasEdit extends Component {
   state = {
+    hiddensala: 0,
     id: "",
     seleccionada: [],
     salaTotal: [],
@@ -28,35 +29,52 @@ class SalasEdit extends Component {
       this.setState({ salas: salas.data })
     })
   }
-  handleChange = (e) => {
+  handleChangeName = (e) => {
     e.preventDefault();
     const { salas, salaTotal } = this.state;
     this.setState({
       [e.target.name]: e.target.value
     })
-
-
-    let salasfiltrada = salas.filter(function (salas) {
+    let salasfiltradaNombre = salas.filter(function (salas) {
       return salas.Nombre.toLowerCase() == e.target.value.toLowerCase();
     }).map(function (sala) {
       return sala.Orden;
     })
-
-    this.setState({ seleccionada: salasfiltrada })
-
-
+    this.setState({ seleccionada: salasfiltradaNombre })
     let SalaFinal = salas.filter(function (salas) {
-      return salas.Orden == salasfiltrada;
+      return salas.Orden == salasfiltradaNombre;
     })
-
-
     this.setState({
       salaTotal: SalaFinal,
-      id: salaTotal.map(function (sala) { return sala.Encargado })
+      id: salaTotal.map(function (sala) { return sala._id })
+    })
+  }
+
+  handleChangeOrden = (e) => {
+    e.preventDefault();
+    const { salas, salaTotal } = this.state;
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+    let salasfiltradaNombre = salas.filter(function (salas) {
+      return salas.Orden == e.target.value.toUpperCase();
+    }).map(function (sala) {
+      return sala.Orden;
+    })
+    this.setState({ seleccionada: salasfiltradaNombre })
+    let SalaFinal = salas.filter(function (salas) {
+      return salas.Orden == salasfiltradaNombre;
+    })
+    this.setState({
+      salaTotal: SalaFinal,
+      id: salaTotal.map(function (sala) { return sala._id }),
+      Descripcion: salaTotal.map(function (sala) { return sala.Descripcion }),
+      Encargado: salaTotal.map(function (sala) { return sala.Encargado }),
     })
 
 
   }
+
   handleEdit = (e) => {
 
     this.setState({
@@ -64,10 +82,15 @@ class SalasEdit extends Component {
     })
   }
   doEdit = (e) => {
+
     e.preventDefault();
-    const { Nombre, Descripcion, Operarios, Producto, Orden, Encargado, Incio, Fin, FinEstimado, Unidades, UnidadesActuales, Estado } = this.state;
+
+    const { Nombre, Descripcion, Operarios, Producto, Orden, Encargado, Incio, Fin, FinEstimado, Unidades, UnidadesActuales, Estado, id } = this.state;
     const { salaTotal } = this.state;
-    ApiClient.SalaUpdate({ _id: 11 }, { Nombre: Nombre, Descripcion: Descripcion, Orden: Orden, Encargado: Encargado })
+
+    const idToUpdate = salaTotal.map(function (sala) { return sala._id })
+
+    ApiClient.SalaUpdate(idToUpdate, { Nombre: Nombre, Descripcion: Descripcion, Orden: Orden, Encargado: Encargado })
 
   }
   handleSubmit = (e) => {
@@ -76,7 +99,7 @@ class SalasEdit extends Component {
 
   }
   render() {
-    const { seleccionada, salaTotal, Nombre, Descripcion, Operarios, Producto, Orden, Encargado, Incio, Fin, FinEstimado, Unidades, UnidadesActuales, Estado } = this.state;
+    const { hiddensala, seleccionada, salaTotal, Nombre, Descripcion, Operarios, Producto, Orden, Encargado, Incio, Fin, FinEstimado, Unidades, UnidadesActuales, Estado } = this.state;
 
     return (
       <div>
@@ -85,55 +108,62 @@ class SalasEdit extends Component {
 
           <h3 className="centered" >Buscar  Sala</h3>
 
-          <form onSubmit={this.handleSubmit} class="ui  form">
-            <div class="three fields">
-              <div class="  six    wide field  field">
+          <form onSubmit={this.handleSubmit} className="ui  form">
+            <div className="three fields">
+              <div className="  six    wide field  field">
                 <h4>Nombre de la  sala</h4>
-                <input type="text" onChange={this.handleChange} name="Nombre" placeholder="Nombre" />
+                <input type="text" onChange={this.handleChangeName} name="Nombre" placeholder="Nombre" />
               </div>
-              <div class="ten   wide field field">
+              <div className="ten   wide field field">
                 <h4>Orden de Produccion</h4>
-                <input type="text" value={seleccionada} name="Descripcion" placeholder="Descripcion" />
+                <input type="text" onChange={this.handleChangeOrden} name="Orden" placeholder="Orden" />
               </div>
 
             </div>
 
-            <div class="field">
+            <div className="field">
 
             </div>
-
+            <button onClick={this.handledoSearch} className="ui button" type="submit">Buscar</button>
           </form>
 
 
         </div>
-        <div className=" ui message  pad-small ">
 
-          <h3 className="centered" >Modificar   Sala</h3>
+        <div>
+          <div className=" ui message  pad-small ">
 
-          <form onSubmit={this.doEdit} class="ui  form">
-            <div class="three fields">
-              <div class="  six    wide field  field">
-                <h4>Nombre de la  sala</h4>
-                <input type="text" defaultValue={salaTotal.map(function (sala) { return sala.Nombre })} name="Nombre" placeholder="Nombre" />
+            <h3 className="centered" >Modificar   Sala</h3>
+
+            <form onSubmit={this.doEdit} className="ui  form">
+              <div className="three fields">
+                <div className="  six    wide field  field">
+                  <h4>Nombre de la  sala</h4>
+                  <input type="text" defaultValue={salaTotal.map(function (sala) { return sala.Nombre })} name="Nombre" placeholder="Nombre" />
+                </div>
+                <div className="ten   wide field field">
+                  <h4>Orden de Produccion</h4>
+                  <input type="text" defaultValue={salaTotal.map(function (sala) { return sala.Orden })} name="Orden" placeholder="Orden" />
+                </div>
+                <div className="ten   wide field field">
+                  <h4>Encargado</h4>
+                  <input type="text" defaultValue={salaTotal.map(function (sala) { return sala.Encargado })} name="Encargado" placeholder="Encargado" />
+                </div>
               </div>
-              <div class="ten   wide field field">
-                <h4>Orden de Produccion</h4>
-                <input type="text" defaultValue={salaTotal.map(function (sala) { return sala.Orden })} name="Descripcion" placeholder="Descripcion" />
+
+              <div className="field">
+                <div className="ten   wide field field">
+                  <h4>Descripcion</h4>
+                  <input type="text" defaultValue={salaTotal.map(function (sala) { return sala.Descripcion })} name name="Descripcion" placeholder="Descripcion" />
+                </div>
               </div>
-              <div class="ten   wide field field">
-                <h4>Encargado</h4>
-                <input type="text" defaultValue={salaTotal.map(function (sala) { return sala.Encargado })} onChange={this.handleEdit} name="Encargado" placeholder="Encargado" />
-              </div>
-            </div>
-
-            <div class="field">
-
-            </div>
-            <button class="ui button" type="submit">Actualizar</button>
-          </form>
+              <button className="ui button" type="submit">Actualizar</button>
+            </form>
 
 
-        </div>
+          </div> </div>
+
+
       </div>
     );
   }

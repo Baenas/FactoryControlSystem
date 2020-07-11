@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TopBar from '../Bars/Topbar'
 import ApiClient from '../../services/ApiClient'
-
+import { Link } from 'react-router-dom'
 class SalasAll extends Component {
   state = {
 
@@ -20,21 +20,23 @@ class SalasAll extends Component {
 
       return (
         <div key={index}>
-          <div className="ui  message">
-            <div className="header">
-              {nota.Nombre} -  {nota.Orden}
+          <Link to={{ pathname: "/salas/id/" + nota._id, state: { id: nota._id } }}>
+
+            <div className="ui  message">
+              <div className="header">
+                {nota.Nombre} -  {nota.Orden}
+              </div>
+              <div className="header">
+                {nota.Descripcion}
+              </div>
+
+
+              {nota.Encargado}
+
+
             </div>
-            <div className="header">
-              {nota.Descripcion}
-            </div>
-
-
-            {nota.Encargado}
-
-
-          </div>
-
-        </div>
+          </Link>
+        </div >
       )
     })
     return sala

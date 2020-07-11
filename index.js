@@ -8,12 +8,13 @@ require('./models/User');
 require('./models/Notes');
 require('./models/Day');
 require('./models/Salas');
+require('./models/Ordenes');
 const app = express();
 require('dotenv').config();
 mongoose.Promise = global.Promise;
 const dbPath = process.env.MONGODB_URI;
 mongoose
-  .connect(dbPath)
+  .connect(dbPath, { useFindAndModify: false })
   .then(() => console.log("MongoDB Connected..."))
   .catch(err => console.log(err));
 app.use(bodyParser.json());
@@ -30,6 +31,7 @@ require('./routes/notesRouter')(app);
 require('./routes/auth')(app);
 require('./routes/dayRouter')(app);
 require('./routes/SalasRouter')(app);
+require('./routes/OrdenRouter')(app);
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 

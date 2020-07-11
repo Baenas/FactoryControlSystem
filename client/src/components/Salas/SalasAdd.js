@@ -21,7 +21,7 @@ class SalasAdd extends Component {
   }
 
   componentDidMount() {
-
+    this.OPGenerator()
   }
   handleChange = (e) => {
     this.setState({
@@ -29,11 +29,18 @@ class SalasAdd extends Component {
     })
 
   }
+
+  OPGenerator = () => {
+
+    this.setState({ Orden: "aaa" })
+
+  }
+
   AddSala = (e) => {
 
     const { Nombre, Descripcion, Operarios, Producto, Orden, Encargado, Incio, Fin, FinEstimado, Unidades, UnidadesActuales, Estado } = this.state;
     e.preventDefault()
-    ApiClient.SalaAdd({ Nombre: Nombre, Descripcion: Descripcion, Orden: Orden, Encargado: Encargado })
+    ApiClient.SalaAdd({ Nombre: Nombre, Descripcion: Descripcion, Orden: Orden, Encargado: Encargado, Incio: Incio })
   }
   render() {
 
@@ -46,7 +53,7 @@ class SalasAdd extends Component {
           <div class="three fields">
             <div class="four   wide field field">
               <h4>Orden de Produccion</h4>
-              <input type="text" onChange={this.handleChange} name="Orden" placeholder="Orden" />
+              <input type="text" onChange={this.handleChange} disabled defaultValue={this.state.Orden} name="Orden" placeholder="Orden" />
             </div>
             <div class="ten   wide field field">
               <h4>Descripcion de la  sala</h4>

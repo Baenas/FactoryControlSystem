@@ -5,6 +5,14 @@ module.exports = (app) => {
     let salas = await Salas.find();
     return res.status(200).send(salas);
   });
+  app.get(`/api/salas/:id`, async (req, res) => {
+    const {
+      id
+    } = req.params;
+    let sala = await Salas.findById(id, req.body);
+
+    return res.status(200).send(sala);
+  });
   app.post(`/api/salas`, async (req, res) => {
     let sala = await Salas.create(req.body);
     return res.status(201).send({

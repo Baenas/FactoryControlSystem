@@ -1,0 +1,23 @@
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom'
+
+class OrdenLista extends Component {
+  state = {
+
+    redirect: false,
+  }
+
+  render() {
+    const { redirect } = this.state;
+    if (redirect) {
+      return <Redirect to='/orden' />;
+    }
+    return (
+      <div>
+
+        a
+      </div>
+    )
+  }
+}
+export default OrdenLista;

@@ -17,9 +17,9 @@ class SalasMenu extends Component {
       <div className=" ui pad-small ">
 
         <div className=" ui pad-small ">
-          <button onClick={() => this.setState({ open: "all" })} className="ui blue button">HOME</button>
+          <button onClick={() => this.setState({ open: "all" })} className="ui blue button">Activas</button>
           <button onClick={() => this.setState({ open: "add" })} className="ui green button">Añadir  Sala</button>
-          <button onClick={() => this.setState({ open: "edit" })} className="ui yellow button">Editar  Sala</button>
+          <button onClick={() => this.setState({ open: "edit" })} className="ui yellow button">Buscar   Sala</button>
 
         </div>
         {this.state.open === "all" ? <SalasAll /> : null}

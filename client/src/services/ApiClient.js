@@ -26,7 +26,25 @@ class ApiClient {
     return this.apiClient.post("/api/salas", body)
   }
   SalaUpdate(id, body) {
-    return this.apiClient.put("/api/salas/" + id, body)
+    return this.apiClient.put(`/api/salas/${id}`, body)
+  }
+  SalaSingle(id) {
+    return this.apiClient.get(`/api/salas/${id}`)
+  }
+
+
+
+  OrdenesAll() {
+    return this.apiClient.get("/api/orden")
+  }
+  AddOrden(body) {
+    return this.apiClient.post("/api/orden", body)
+  }
+  OrdenUpdate(id, body) {
+    return this.apiClient.put(`/api/orden/${id}`, body)
+  }
+  OrdenSingle(id) {
+    return this.apiClient.get(`/api/orden/${id}`)
   }
 }
 

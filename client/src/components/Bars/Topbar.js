@@ -14,6 +14,10 @@ export default class TopBar extends Component {
             <Menu.Item
               name='/main'
             /> </Link>
+          <Link to='/orden'>
+            <Menu.Item
+              name='/orden'
+            /></Link>
           <Link to='/salas'>
             <Menu.Item
               name='/salas'
